@@ -1,0 +1,133 @@
+local ESX = nil
+Citizen.CreateThread(function()
+	while ESX == nil do
+		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+		Citizen.Wait(0)
+	end
+end)
+local Keys = {
+    ["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57,
+    ["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177,
+    ["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
+    ["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
+    ["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
+    ["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70,
+    ["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
+    ["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
+    ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
+}
+	-- END OF SETTINGS --
+
+--	print(utils[1].itemtogive)
+	local function DrawPlayerList()
+
+
+
+
+		local players = {}
+		local utils = {}
+	
+	    for i = 0, 31 do
+			if NetworkIsPlayerActive( i ) then
+				table.insert( players, i )
+			end
+		end
+
+
+
+	--	for k, v in pairs (Config.Job) do
+		for i = 1, tablelength(JobList) , 1 do
+			local r
+			local g
+			local b
+			v = JobList[i]
+
+			--Row BG
+		--	DrawRect( 0.089, 0.38 + ( i * 0.03 ), 0.2, 0.03,  0, 0, 0, 200)
+	
+			--Name Label
+
+
+
+			SetTextFont( 8 )
+			SetTextScale( 0.45, 0.45 )
+			SetTextColour(255, 255, 255, 255  )
+			SetTextEntry( "STRING" )
+			
+				
+			
+			
+
+					AddTextComponentString("~p~"..v.label)
+					DrawText(  0.013, 0.3583 + ( i * 0.031 ) )
+
+
+			SetTextFont( 8 )
+			SetTextScale( 0.45, 0.45 )
+			SetTextColour(255, 255, 255, 255  )
+			SetTextEntry( "STRING" )
+			AddTextComponentString("~p~".. v.count)
+			DrawText(  0.113, 0.3583 + ( i * 0.031 ) )
+			--Voice Indicator
+			
+			--Wanted Stars
+			--i = i + 1
+		end
+		-- VEHICULE PART
+end
+
+
+function drawPid(r, g, b, a)
+    SetTextFont(4)
+    SetTextScale(0.5, 0.5)
+    SetTextColour(r, g, b, a)
+    SetTextDropShadow(0, 0, 0, 0, 255)
+    SetTextEdge(1, 0, 0, 0, 255)
+    SetTextDropShadow()
+    SetTextOutline()
+    BeginTextCommandDisplayText("STRING")
+    AddTextComponentString("~y~ID:~s~ " .. pid)
+    EndTextCommandDisplayText(0.192, 0.745)
+end
+
+function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
+	local LastPress = 0
+	
+	Citizen.CreateThread( function()
+
+	
+		while true do
+			Wait( 0 )
+
+					if IsControlPressed( 0, Keys[KeyToPress] ) then
+						LastPress = GetGameTimer()
+					end
+
+			if GetGameTimer() < LastPress + 200 then
+				DrawPlayerList()
+			end
+	
+		end
+	end )
+	
+
+
+
+	function tablelength(T)
+		local count = 0
+		for _ in pairs(T) do count = count + 1 end
+		return count
+	  end
+
+
+
+RegisterNetEvent("JobsConnected")
+AddEventHandler("JobsConnected", function(table)
+	JobList = table
+
+end)
+
