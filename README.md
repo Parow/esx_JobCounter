@@ -24,4 +24,4 @@ To add a job to the counter :
 	count = 0,
 }
 ```
-Add this to the config.lua don't forget the `,`
+Add this to the config.lua don't forget the `,` at the end
